@@ -32,8 +32,8 @@ optional arguments:
   --no-json             disable json encoding for response
 ```
 
-* `-p` project: specify the project on which to run the query.
-* `-r`: displays the data structure as received directly, without converting it to a string.
-* `-no-json`: does not use JSON to communicate with the server.
+* `-p` project: the project on which to run the query.
+* `-r`: will display the data structure as received directly, without converting it to a string.
+* `--no-json`: will not use JSON to communicate with the server.
 
 
