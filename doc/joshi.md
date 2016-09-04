@@ -6,11 +6,15 @@ the following extras are allowed:
 
 * Shebang line. May be useful if you want to execute the script directly, allthough it may not be so useful because it would tie the script to a particular database. Example:
 
-   #!joshi.py -p myProject.tar.gz
+```
+#!joshi.py -p myProject.tar.gz
+```
 
 * File includes. Can be used to include other scripts into the current script.
 
-   #include file
+```
+#include file
+```
 
 # Usage
 

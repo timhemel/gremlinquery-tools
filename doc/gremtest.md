@@ -6,7 +6,9 @@ Gremtest is a joshi script that lets you test Gremlin queries against an Octopus
 
 To create a test script, include gremtest:
 
-  #include gremtest.grm
+```
+#include gremtest.grm
+```
 
 Then, define your tests, giving it a test name, a closure containing the test code, and an optional flag to enable or disable the test. For example:
 
@@ -23,7 +25,9 @@ test( "function name traversal", { ->
 
 At the end, call `run_tests`:
 
-  run_tests()
+```
+run_tests()
+```
 
 # Output
 
