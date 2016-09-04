@@ -1,0 +1,22 @@
+#include gremtest.grm
+
+test( "function name traversal", { ->
+	fname = g.V()
+		.has(NODE_TYPE,TYPE_FUNCTION)
+		.has(NODE_CODE,'tut3')
+		.values('code')
+		.next()
+	assertEquals( fname, 'tut3')
+})
+
+test("test with error", { ->
+	x = 5 / 0;
+})
+
+test("failing test", { ->
+	assertEquals(1,2)
+})
+
+run_tests()
+
+
