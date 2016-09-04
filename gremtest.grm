@@ -15,10 +15,10 @@ def do_test( name, testclosure ) {
 	try {
 		testclosure()
 		gremtest_result_count['pass']++
-		sprintf "%-35s: ${green}OK${reset}", name
+		sprintf "%-35s: ${green}PASS${reset}", name
 	} catch (AssertionError e) {
 		gremtest_result_count['fail']++
-		sprintf "%-35s: ${red}FAILED${reset}\n%s", [name,e.getMessage()]
+		sprintf "%-35s: ${red}FAIL${reset}\n%s", [name,e.getMessage()]
 	} catch (Exception e) {
 		gremtest_result_count['error']++
 		sw = new StringWriter()
@@ -47,7 +47,7 @@ def test( name, testclosure, enable=true ) {
 // the last command in your test script.
 //
 def run_tests () {
-	gremtest_results << sprintf ("%d pass, %d fail, %d errors", gremtest_result_count['pass'], gremtest_result_count['fail'], gremtest_result_count['error'])
+	gremtest_results << sprintf ("%d pass, %d fail, %d error(s)", gremtest_result_count['pass'], gremtest_result_count['fail'], gremtest_result_count['error'])
 	gremtest_results
 }
 
