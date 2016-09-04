@@ -8,7 +8,8 @@ class JoshiApp:
     def __init__(self):
         parser = ArgumentParser()
         parser.add_argument('-p','--project',help='project to execute')
-        parser.add_argument('-r','--raw',action='store_true',default=False,help='print raw response')
+        parser.add_argument('-r','--raw',action='store_true',default=False,help='do not convert response data to string.')
+        parser.add_argument('--no-json',action='store_true',default=False,help='disable json encoding for response')
         parser.add_argument('file',help='execute script from file instead of stdin')
         self.args = parser.parse_args()
     @staticmethod
@@ -44,13 +45,16 @@ class JoshiApp:
         lines = __class__._parseScript(f)
         query = "\n".join(lines)
         db = DBInterface()
-        if self.args.raw:
+        if self.args.no_json:
             db.disable_json()
         db.connectToDatabase(self.args.project)
 
         result = db.runGremlinQuery(query)
         for x in result:
-            print(x)
+            if self.args.raw:
+                print(repr(x))
+            else:
+                print(x)
         db.runGremlinQuery("quit")
 
 if __name__=="__main__":
