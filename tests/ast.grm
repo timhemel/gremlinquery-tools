@@ -103,6 +103,30 @@ test("statements_from_cfg_node", {
 	assertEquals(cfgnode_found, cfgnode)
 })
 
+test("lval", {
+	lvalnode =
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.has('type','AssignmentExpression')
+		.lval()
+		.values('code')
+		.next()
+	assertEquals(lvalnode, "x")
+})
+
+test("rval", {
+	rvalnode =
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.has('type','AssignmentExpression')
+		.rval()
+		.values('code')
+		.next()
+	assertEquals(rvalnode, "8 * ++ a - b")
+})
+
 
 run_tests()
 
