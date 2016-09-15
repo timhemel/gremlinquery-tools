@@ -196,6 +196,46 @@ test("calleeToCall", {
 	assertEquals(callnode_found, callnode_expected)
 })
 
+test("callToAssigns", {
+
+	assignmentnodes_expected = 
+		g.V().has('type','Function').has('code','test_funccall_from_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','AssignmentExpression')
+		.collect() as Set
+
+	assignmentnodes_found =
+		g.V().has('type','Function').has('code','test_funccall_from_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.callToAssigns()
+		.collect() as Set
+
+	assertEquals(assignmentnodes_found, assignmentnodes_expected)
+})
+
+test("callToAssignsNested", {
+
+	assignmentnodes_expected = 
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','AssignmentExpression')
+		.collect() as Set
+
+	assignmentnodes_found =
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.callToAssigns()
+		.collect() as Set
+
+	assertEquals(assignmentnodes_found, assignmentnodes_expected)
+})
+
 
 run_tests()
 
