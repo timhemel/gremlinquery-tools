@@ -56,12 +56,12 @@ def run_tests () {
 //
 
 // check a condition which is defined as a closure.
-def assertCond(condition,expected,found) {
-	assert condition(expected,found)
+def assertCond(condition,found,expected) {
+	assert condition(found,expected)
 }
 
-def assertEquals(expected,found) {
-	assert expected == found
+def assertEquals(found,expected) {
+	assert found == expected
 }
 
 
