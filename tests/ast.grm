@@ -66,5 +66,43 @@ test("siblings_of_siblings", {
 	assertEquals(siblings_found, siblings_expected)
 })
 
+test("statements_from_leaf_ast_node", {
+	leafnode =
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.has('type','Identifier')
+		.collect()[-1]
+	functionId = leafnode.value('functionId')
+	cfgnode_expected = 
+		g.V()
+		.has('functionId',functionId)
+		.has('isCFGNode','True')
+		.has('type',P.not(P.within('CFGEntryNode','CFGExitNode')))
+		.next()
+	cfgnode_found =
+		__.inject(leafnode)
+		.statements()
+		.next()
+
+	assertEquals(cfgnode_found, cfgnode_expected)
+})
+
+test("statements_from_cfg_node", {
+	cfgnode =
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.has('type','ExpressionStatement')
+		.collect()[-1]
+	cfgnode_found =
+		__.inject(cfgnode)
+		.statements()
+		.next()
+
+	assertEquals(cfgnode_found, cfgnode)
+})
+
+
 run_tests()
 
