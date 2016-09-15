@@ -127,6 +127,75 @@ test("rval", {
 	assertEquals(rvalnode, "8 * ++ a - b")
 })
 
+test("callToArguments", {
+	args_found =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.callToArguments()
+		.map{ [ it.get().value('childNum'), it.get().value('type'), it.get().value('code') ]}
+		.collect() as Set
+	args_expected = [ ['0', 'Argument', 'STDERR'],
+		['1', 'Argument', '"Hello %s!\\n"'],
+		['2', 'Argument', 'name']] as Set
+	assertEquals(args_found, args_expected)
+})
+
+test("ithArguments", {
+	args_found =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.ithArguments('1')
+		.map{ [ it.get().value('childNum'), it.get().value('type'), it.get().value('code') ]}
+		.collect() as Set
+	args_expected = [ ['1', 'Argument', '"Hello %s!\\n"'] ] as Set
+	assertEquals(args_found, args_expected)
+})
+
+test("argToCall", {
+	callnode_expected =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.next()
+	callnode_found = __.inject(callnode_expected)
+		.ithArguments('1')
+		.argToCall()
+		.next()
+	assertEquals(callnode_found, callnode_expected)
+})
+
+test("callToCallee", {
+	callee =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.callToCallee()
+		.map{ [ it.get().value('childNum'), it.get().value('type'), it.get().value('code') ]}
+		.collect()
+	assertEquals(callee, [['0','Callee','fprintf']])
+})
+
+test("calleeToCall", {
+	callnode_expected =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.next()
+	functionId = callnode_expected.value('functionId')
+	callnode_found = 
+		g.V().has('type','Callee').has('functionId',functionId)
+		.calleeToCall()
+		.next()
+	assertEquals(callnode_found, callnode_expected)
+})
+
 
 run_tests()
 
