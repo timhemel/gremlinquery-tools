@@ -294,6 +294,21 @@ test("matchParentsEnclosingStatementOnSelf", {
 	assertEquals(nodes_found, [node_expected] as Set)
 })
 
+test("arg", {
+	arg_expected =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','ArgumentList')
+		.ithChildren('2')
+		.next()
+	arg_found = 
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.arg('fprintf','2')
+		.next()
+	assertEquals(arg_found, arg_expected)
+})
 
 
 run_tests()
