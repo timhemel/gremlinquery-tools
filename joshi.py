@@ -3,12 +3,14 @@
 from argparse import ArgumentParser
 import sys,re
 from octopus.server.DBInterface import DBInterface
+import pprint
 
 class JoshiApp:
     def __init__(self):
         parser = ArgumentParser()
         parser.add_argument('-p','--project',help='project to execute')
         parser.add_argument('-r','--raw',action='store_true',default=False,help='do not convert response data to string.')
+        parser.add_argument('-P','--pretty',action='store_true',help='pretty print Python data structures in result')
         parser.add_argument('--no-json',action='store_true',default=False,help='disable json encoding for response')
         parser.add_argument('file',help='execute script from file instead of stdin')
         self.args = parser.parse_args()
@@ -50,9 +52,12 @@ class JoshiApp:
         db.connectToDatabase(self.args.project)
 
         result = db.runGremlinQuery(query)
+        pp = pprint.PrettyPrinter(indent=4,compact=True)
         for x in result:
             if self.args.raw:
                 print(repr(x))
+            elif self.args.pretty:
+                pp.pprint(x)
             else:
                 print(x)
         db.runGremlinQuery("quit")
