@@ -236,6 +236,65 @@ test("callToAssignsNested", {
 	assertEquals(assignmentnodes_found, assignmentnodes_expected)
 })
 
+test("matchParents", {
+
+	nodes_expected = 
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','AdditiveExpression')
+		.collect() as Set
+
+	nodes_found =
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.matchParents( has('type','AdditiveExpression') )
+		.collect() as Set
+
+	assertEquals(nodes_found, nodes_expected)
+})
+
+
+test("matchParentsEnclosingStatement", {
+
+	nodes_expected = 
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','ExpressionStatement')
+		.collect() as Set
+
+	nodes_found =
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','CallExpression')
+		.matchParents( has('type','ExpressionStatement') )
+		.collect() as Set
+
+	assertEquals(nodes_found, nodes_expected)
+})
+
+test("matchParentsEnclosingStatementOnSelf", {
+
+	node_expected = 
+		g.V().has('type','Function').has('code','test_funccall_from_nested_assignment')
+		.functionToAST()
+		.astNodes()
+		.has('type','ExpressionStatement')
+		.next()
+
+	nodes_found =
+		__.inject(node_expected)
+		.matchParents( has('type','ExpressionStatement') )
+		.collect() as Set
+
+	assertEquals(nodes_found, [node_expected] as Set)
+})
+
+
 
 run_tests()
 
