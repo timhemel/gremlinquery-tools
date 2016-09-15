@@ -14,5 +14,22 @@ test("astNodes_on_leaf", {
 	assertEquals(subnodes,[identifiers[0]])
 })
 
+test("astNodes_on_root", {
+	traversed_nodes =
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.collect() as Set
+
+	functionId = traversed_nodes[0].value('functionId')
+
+	all_function_ast_nodes =
+		g.V().has('functionId',functionId)
+		.has('type',P.not(P.within('CFGEntryNode','CFGExitNode','Symbol')))
+		.collect() as Set
+
+	assertEquals(traversed_nodes,all_function_ast_nodes)
+})
+
 run_tests()
 
