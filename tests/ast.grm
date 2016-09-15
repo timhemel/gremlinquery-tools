@@ -1,0 +1,20 @@
+#include gremtest.grm
+
+test("astNodes_on_leaf", {
+	identifiers =
+	g.V().has('type','Function').has('code','test_astnodes')
+	.functionToAST()
+	.astNodes()
+	.has('type','Identifier')
+	.collect()
+	println identifiers
+	subnodes = __.inject(identifiers[0])
+		.astNodes()
+		.collect()
+	println subnodes
+
+	assertEquals(subnodes,[identifiers[0]])
+})
+
+run_tests()
+
