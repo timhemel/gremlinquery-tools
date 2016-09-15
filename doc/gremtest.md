@@ -52,7 +52,7 @@ at octopus.server.gremlinShell.ShellRunnable(processClients:69)
 at octopus.server.gremlinShell.ShellRunnable(run:44)
 
 failing test                       : FAIL
-assert expected == found
+assert found == expected
        |        |  |
        1        |  2
                 false
