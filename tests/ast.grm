@@ -31,5 +31,40 @@ test("astNodes_on_root", {
 	assertEquals(traversed_nodes,all_function_ast_nodes)
 })
 
+test("siblings_single_node", {
+	parent = 
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.has('type','AssignmentExpression')
+		.next()
+	children = __.inject(parent).out(AST_EDGE).collect()
+
+	siblings_expected = (children - children[0]) as Set
+	siblings_found =
+		__.inject(children[0])
+		.siblings()
+		.collect() as Set
+
+	assertEquals(siblings_found, siblings_expected)
+})
+
+test("siblings_of_siblings", {
+	parent = 
+		g.V().has('type','Function').has('code','test_astnodes')
+		.functionToAST()
+		.astNodes()
+		.has('type','AssignmentExpression')
+		.next()
+	children = __.inject(parent).out(AST_EDGE).collect()
+	siblings_expected =
+		(children - children[0]) + (children - children[1]) as Set
+	siblings_found =
+		__.inject(children[0],children[1])
+		.siblings()
+		.collect() as Set
+	assertEquals(siblings_found, siblings_expected)
+})
+
 run_tests()
 
