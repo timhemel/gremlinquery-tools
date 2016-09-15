@@ -310,6 +310,22 @@ test("arg", {
 	assertEquals(arg_found, arg_expected)
 })
 
+test("param", {
+	param_expected =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','Parameter')
+		.has('code','name')
+		.collect()
+	param_found = 
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.param('name')
+		.collect()
+	assertEquals(param_found, param_expected)
+})
+
 
 run_tests()
 
