@@ -7,11 +7,9 @@ test("astNodes_on_leaf", {
 	.astNodes()
 	.has('type','Identifier')
 	.collect()
-	println identifiers
 	subnodes = __.inject(identifiers[0])
 		.astNodes()
 		.collect()
-	println subnodes
 
 	assertEquals(subnodes,[identifiers[0]])
 })
