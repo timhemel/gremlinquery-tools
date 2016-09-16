@@ -316,13 +316,31 @@ test("param", {
 		.functionToAST()
 		.astNodes()
 		.has('type','Parameter')
-		.has('code','name')
-		.collect()
+		.has('code','char * name')
+		.next()
 	param_found = 
 		g.V().has('type','Function').has('code','test_funccall')
 		.functionToAST()
-		.param('name')
-		.collect()
+		.param('.* name')
+		.next()
+	assertEquals(param_found, param_expected)
+})
+
+test("paramsToNames", {
+	param_expected =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','ParameterType')
+		.siblings()
+		.next()
+	param_found = 
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','Parameter')
+		.paramsToNames()
+		.next()
 	assertEquals(param_found, param_expected)
 })
 
