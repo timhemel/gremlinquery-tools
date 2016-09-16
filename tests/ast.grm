@@ -327,22 +327,76 @@ test("param", {
 })
 
 test("paramsToNames", {
-	param_expected =
+	paramnames_expected =
 		g.V().has('type','Function').has('code','test_funccall')
 		.functionToAST()
 		.astNodes()
 		.has('type','ParameterType')
 		.siblings()
 		.next()
-	param_found = 
+	paramnames_found = 
 		g.V().has('type','Function').has('code','test_funccall')
 		.functionToAST()
 		.astNodes()
 		.has('type','Parameter')
 		.paramsToNames()
 		.next()
-	assertEquals(param_found, param_expected)
+	assertEquals(paramnames_found, paramnames_expected)
 })
+
+test("paramsToTypes", {
+	paramtypes_expected =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','ParameterType')
+		.next()
+	paramtypes_found = 
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','Parameter')
+		.paramsToTypes()
+		.next()
+	assertEquals(paramtypes_found, paramtypes_expected)
+})
+
+test("paramsToTypesDeclarationOnly", {
+	paramtypes_expected =
+		g.V().has('type','Function').has('code','declared_function')
+		.functionToAST()
+		.astNodes()
+		.has('type','ParameterType')
+		.collect()
+	paramtypes_found = 
+		g.V().has('type','Function').has('code','declared_function')
+		.functionToAST()
+		.astNodes()
+		.has('type','Parameter')
+		.paramsToTypes()
+		.collect()
+	assertEquals(paramtypes_found, paramtypes_expected)
+})
+
+test("paramsToNamesDeclarationOnly", {
+	paramnames_expected =
+		g.V().has('type','Function').has('code','declared_function')
+		.functionToAST()
+		.astNodes()
+		.has('type','Parameter')
+		.children()
+		.not(has('type','ParameterType'))
+		.collect()
+	paramnames_found = 
+		g.V().has('type','Function').has('code','declared_function')
+		.functionToAST()
+		.astNodes()
+		.has('type','Parameter')
+		.paramsToNames()
+		.collect()
+	assertEquals(paramnames_found, paramnames_expected)
+})
+
 
 
 run_tests()

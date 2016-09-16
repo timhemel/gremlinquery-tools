@@ -17,3 +17,6 @@ void test_funccall_from_nested_assignment ()
 {
 	x = 45 + (a = 5 + sqrt(9));
 }
+
+int declared_function(char *, int);
+
