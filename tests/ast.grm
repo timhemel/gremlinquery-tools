@@ -31,6 +31,19 @@ test("astNodes_on_root", {
 	assertEquals(traversed_nodes,all_function_ast_nodes)
 })
 
+test("ithChildren", {
+	children_found =
+		g.V().has('type','Function').has('code','test_funccall')
+		.functionToAST()
+		.astNodes()
+		.has('type','ArgumentList')
+		.ithChildren('1')
+		.map{ [ it.get().value(NODE_CHILDNUM), it.get().value('type'), it.get().value('code') ] }
+		.collect()
+	children_expected = [ ['1','Argument','"Hello %s!\\n"' ] ]
+	assertEquals(children_found,children_expected)
+})
+
 test("siblings_single_node", {
 	parent = 
 		g.V().has('type','Function').has('code','test_astnodes')
