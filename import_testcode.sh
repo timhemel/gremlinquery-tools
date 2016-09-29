@@ -8,9 +8,8 @@
 codedir_parent=`dirname "$1"`
 project_name=`basename "$1"`
 
-
 tar -zcvf "$project_name".tar.gz -C "$codedir_parent" "$project_name" && \
-joern-delete-project "$project_name".tar.gz && \
+octopus-project delete "$project_name".tar.gz && \
 joern-import "$project_name".tar.gz && \
 rm "$project_name".tar.gz
 
